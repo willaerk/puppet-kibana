@@ -12,9 +12,17 @@ class kibana::install (
   $user                = $::kibana::user,
 ) {
 
-  $filename = $::architecture ? {
-    /(i386|x86$)/    => "kibana-${version}-linux-x86",
-    /(amd64|x86_64)/ => "kibana-${version}-linux-x64",
+  if versioncmp($version, '4.6') > 0 {
+    $filename = $::architecture ? {
+      /(i386|x86$)/    => "kibana-${version}-linux-x86",
+      /(amd64|x86_64)/ => "kibana-${version}-linux-x86_64",
+    }
+  }
+  else {
+    $filename = $::architecture ? {
+      /(i386|x86$)/    => "kibana-${version}-linux-x86",
+      /(amd64|x86_64)/ => "kibana-${version}-linux-x64",
+    }
   }
 
   $service_provider = $::kibana::params::service_provider
